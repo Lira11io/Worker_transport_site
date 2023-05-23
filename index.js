@@ -19,7 +19,7 @@ console.log(worker.rate); //выведет 10
 console.log(worker.days); //выведет 31
 console.log(worker.getSalary()); //выведет 310 — то есть 10*31
 
-//2 задание
+////////2 задание
 //Объект data
 const data = [
   {
@@ -68,16 +68,15 @@ class Transport {
     this.brand = brand;
   }
   getInfo() {
-    return `Type: ${this.type},
-    Brand: ${this.brand}`;
+    return `Бренд: ${this.brand}`;
   }
 
   getPrice() {
-    return this.price;
+    return `${this.price} руб.`;
   }
 }
 
-//Класс Car
+//Дочерний класс Car
 class Car extends Transport {
   constructor(type, price, brand, doorsCount) {
     super(type, price, brand);
@@ -88,7 +87,7 @@ class Car extends Transport {
   }
 }
 
-//Класс Bike
+//Дочерний класс Bike
 class Bike extends Transport {
   constructor(type, price, brand, maxSpeed) {
     super(type, price, brand);
@@ -99,4 +98,55 @@ class Bike extends Transport {
   }
 }
 
-const block = document.querySelector(".transport"); //получаю контейнер, куда буду добавлять новую разметку
+const block = document.querySelector(".transport__item"); //получаю контейнер, куда буду добавлять новую разметку
+
+data.forEach((object) => {
+  //перебираем наш массив и добавляем разметку
+  if (object.type === "car") {
+    //если тип транспортного средства "car", то создаем новый объект Car
+    const car = new Car(
+      object.type,
+      object.price,
+      object.brand,
+      object.doorsCount
+    );
+    const carElement = document.createElement("div"); //создаем элемент разметки div и присваиваем ему содержание
+    // используем bind(), чтобы привязать контекст функции getDoorsCount() к объекту car
+    const doorsCountFunc = car.getDoorsCount.bind(car);
+    carElement.innerHTML = `${car.getInfo()}
+    Цена: ${car.getPrice()} ${doorsCountFunc()}`;
+    carElement.className = "transport__item_div"; //создаем класс для нового элемента разметки
+    block.appendChild(carElement); //добавляем li в контейнер
+
+    const div = document.createElement("div"); //создаем элемент разметки
+    div.className = "transport__block"; //создаем класс для нового элемента разметки
+    block.appendChild(div); //добавляем div в контейнер
+
+    const img = document.createElement("img"); //создаем элемент разметки
+    img.className = "transport__img"; //создаем класс для нового элемента
+    img.src = object.image; //добавляем значение атрибута из массива
+    div.appendChild(img); //добавляем img в div
+  } else if (object.type === "bike") {
+    //если тип транспортного средства "bike", то создаем новый объект Bike
+    const bike = new Bike(
+      object.type,
+      object.price,
+      object.brand,
+      object.maxSpeed
+    );
+    const bikeElement = document.createElement("div"); //создаем элемент разметки div и присваиваем ему содержание
+    bikeElement.innerHTML = `${bike.getInfo()} 
+    Цена: ${bike.getPrice()} ${bike.getMaxSpeed()}`;
+    bikeElement.className = "transport__item_div"; //создаем класс для нового элемента разметки
+    block.appendChild(bikeElement); //добавляем li в контейнер
+
+    const div = document.createElement("div"); //создаем элемент разметки и кладем его в переменную "div"
+    div.className = "transport__block"; //создаем класс для нового элемента разметки
+    block.appendChild(div); //добавляем div в контейнер
+
+    const img = document.createElement("img"); //создаем элемент разметки
+    img.className = "transport__img"; //создаем класс для нового элемента
+    img.src = object.image; //добавляем значение атрибута из массива
+    div.appendChild(img); //добавляем img в div
+  }
+});

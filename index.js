@@ -78,12 +78,12 @@ class Transport {
 
 //Дочерний класс Car
 class Car extends Transport {
-  constructor(type, price, brand, doorsCount) {
+  constructor(type, price, brand, doors) {
     super(type, price, brand);
-    this.doorsCount = doorsCount;
+    this.doors = doors;
   }
   getDoorsCount() {
-    return `Количество дверей: ${this.doorsCount}`;
+    return `Количество дверей: ${this.doors}`;
   }
 }
 
@@ -104,25 +104,22 @@ data.forEach((object) => {
   //перебираем наш массив и добавляем разметку
   if (object.type === "car") {
     //если тип транспортного средства "car", то создаем новый объект Car
-    const car = new Car(
-      object.type,
-      object.price,
-      object.brand,
-      object.doorsCount
-    );
-    const carElement = document.createElement("div"); //создаем элемент разметки div и присваиваем ему содержание
+    const car = new Car(object.type, object.price, object.brand, object.doors);
+
     // используем bind(), чтобы привязать контекст функции getDoorsCount() к объекту car
     const doorsCountFunc = car.getDoorsCount.bind(car);
+    //создаем элемент разметки div и присваиваем ему содержание
+    const carElement = document.createElement("div");
     carElement.innerHTML = `${car.getInfo()}
     Цена: ${car.getPrice()} ${doorsCountFunc()}`;
     carElement.className = "transport__item_div"; //создаем класс для нового элемента разметки
-    block.appendChild(carElement); //добавляем li в контейнер
+    block.appendChild(carElement); //добавляем разметку в контейнер
 
-    const div = document.createElement("div"); //создаем элемент разметки
+    const div = document.createElement("div"); //создаем элемент разметки div
     div.className = "transport__block"; //создаем класс для нового элемента разметки
     block.appendChild(div); //добавляем div в контейнер
 
-    const img = document.createElement("img"); //создаем элемент разметки
+    const img = document.createElement("img"); //создаем элемент разметки img
     img.className = "transport__img"; //создаем класс для нового элемента
     img.src = object.image; //добавляем значение атрибута из массива
     div.appendChild(img); //добавляем img в div
@@ -134,17 +131,18 @@ data.forEach((object) => {
       object.brand,
       object.maxSpeed
     );
+
     const bikeElement = document.createElement("div"); //создаем элемент разметки div и присваиваем ему содержание
     bikeElement.innerHTML = `${bike.getInfo()} 
     Цена: ${bike.getPrice()} ${bike.getMaxSpeed()}`;
     bikeElement.className = "transport__item_div"; //создаем класс для нового элемента разметки
-    block.appendChild(bikeElement); //добавляем li в контейнер
+    block.appendChild(bikeElement); //добавляем разметку в контейнер
 
     const div = document.createElement("div"); //создаем элемент разметки и кладем его в переменную "div"
     div.className = "transport__block"; //создаем класс для нового элемента разметки
     block.appendChild(div); //добавляем div в контейнер
 
-    const img = document.createElement("img"); //создаем элемент разметки
+    const img = document.createElement("img"); //создаем элемент разметки img
     img.className = "transport__img"; //создаем класс для нового элемента
     img.src = object.image; //добавляем значение атрибута из массива
     div.appendChild(img); //добавляем img в div
